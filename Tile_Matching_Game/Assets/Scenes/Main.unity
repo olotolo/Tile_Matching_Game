@@ -263,8 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b769b2ced6a46d41bfcdf93e5ac264b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 5
-  height: 5
+  width: 12
+  height: 8
   gemPrefab:
   - {fileID: 2344634992302455710, guid: 9d52a22ccd4e5e84ea2ccf8e2a267bee, type: 3}
   - {fileID: 1866407785976793768, guid: 5e764288b09397e40985ee48cd26b599, type: 3}
@@ -272,6 +272,8 @@ MonoBehaviour:
   - {fileID: 675810583380588677, guid: 08e59d411f0fd3a4588e0cba9d8fb73c, type: 3}
   FirstObj: {x: 0, y: 0, z: 0}
   SecondObj: {x: 0, y: 0, z: 0}
+  active: 0
+  selected: {fileID: 0}
 --- !u!4 &1001400063
 Transform:
   m_ObjectHideFlags: 0
