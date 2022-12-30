@@ -132,17 +132,14 @@ public class GemController : MonoBehaviour
 
 
         int indexi = 0;
-        int indexj = 0;
 
         while(indexi < gems.Count)
         {
-            indexj = 0;
+            int indexj = 0;
             while(indexj < gems[indexi].Count)
             {
-                Debug.Log("run");
                 if (gems[indexi][indexj].name == "deleted")
                 {
-                    Debug.Log("DELETED");
                     gems[indexi].RemoveAt(indexj);
                     continue;
                 }
@@ -182,26 +179,36 @@ public class GemController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             if (hit.collider != null)
             {
-                if(active == false)
+                if (active == false)
                 {
                     //Select first
                     selected = hit.collider.gameObject;
                     active = true;
+                    Debug.Log("first selected");
 
                 } else
                 {
                     //Select second and swap
+                    Debug.Log(selected.GetComponent<Tile>().Type);
+                    Debug.Log(hit.collider.gameObject.GetComponent<Tile>().Type);
                     GameObject holder = selected.gameObject;
-                    selected.gameObject.GetComponent<Tile>().Type = hit.collider.gameObject.GetComponent<Tile>().Type;
-                    hit.collider.GetComponent<Tile>().Type = holder.GetComponent<Tile>().Type;
+                    int type1 = hit.collider.gameObject.GetComponent<Tile>().Type;
+                    int type2 = holder.gameObject.GetComponent<Tile>().Type;
 
-                    int layer1 = selected.GetComponent<Tile>().Type;
-                    int layer2 = hit.collider.gameObject.GetComponent<Tile>().Type;
+                    selected.gameObject.GetComponent<SpriteRenderer>().sprite = gemPrefab[type1].GetComponent<SpriteRenderer>().sprite;
+                    hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite = gemPrefab[type2].GetComponent<SpriteRenderer>().sprite;
+                    selected.gameObject.GetComponent<Tile>().x = hit.collider.gameObject.GetComponent<Tile>().x;
+                    selected.gameObject.GetComponent<Tile>().y = hit.collider.gameObject.GetComponent<Tile>().y;
+                    hit.collider.GetComponent<Tile>().x = holder.GetComponent<Tile>().x;
+                    hit.collider.GetComponent<Tile>().y = holder.GetComponent<Tile>().y;
 
-                    selected.gameObject.GetComponent<SpriteRenderer>().sprite = gemPrefab[layer2].GetComponent<SpriteRenderer>().sprite;
-                    hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite = gemPrefab[layer1].GetComponent<SpriteRenderer>().sprite;
+
+                    selected.gameObject.GetComponent<Tile>().Type = type1;
+                    hit.collider.GetComponent<Tile>().Type = type2;
+                    
                     active = false;
 
+                    Debug.Log("Swapped");
 
                     /*
                     FindDups();
