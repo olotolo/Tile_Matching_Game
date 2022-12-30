@@ -168,6 +168,40 @@ public class GemController : MonoBehaviour
 
 
         }
+        selected = null;
+        active = false;
+    }
+
+    private bool CheckIfTileIsAdjacend(GameObject selected, GameObject current)
+    {
+        int selectedX = selected.GetComponent<Tile>().x;
+        int selectedY = gems[selectedX].IndexOf(selected);
+
+        Debug.Log(selectedX + " " + selectedY);
+
+        int currentX = current.GetComponent<Tile>().x;
+        int currentY = gems[currentX].IndexOf(current);
+
+        Debug.Log(currentX + " " + currentY);
+
+        //check if both are in the same x list
+        if(selectedX == currentX)
+        {
+            if (selectedY == currentY) return true;
+            if (selectedY + 1 == currentY) return true;
+            if (selectedY - 1 == currentY) return true;
+        }
+        if(selectedY == currentY)
+        {
+            if (selectedX == currentX) return true;
+            if (selectedX + 1 == currentX) return true;
+            if (selectedX - 1 == currentX) return true;
+        }
+
+
+
+        Debug.Log("TOO FAR APART");
+        return false;
     }
 
     void Update()
@@ -183,11 +217,17 @@ public class GemController : MonoBehaviour
                 {
                     //Select first
                     selected = hit.collider.gameObject;
+                    selected.GetComponent<SpriteRenderer>().color = Color.cyan;
                     active = true;
                     Debug.Log("first selected");
 
                 } else
                 {
+                    if(!CheckIfTileIsAdjacend(selected, hit.collider.gameObject))
+                    {
+                        return;
+                    }
+                    selected.GetComponent<SpriteRenderer>().color = Color.white;
                     //Select second and swap
                     Debug.Log(selected.GetComponent<Tile>().Type);
                     Debug.Log(hit.collider.gameObject.GetComponent<Tile>().Type);
@@ -197,10 +237,9 @@ public class GemController : MonoBehaviour
 
                     selected.gameObject.GetComponent<SpriteRenderer>().sprite = gemPrefab[type1].GetComponent<SpriteRenderer>().sprite;
                     hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite = gemPrefab[type2].GetComponent<SpriteRenderer>().sprite;
-                    selected.gameObject.GetComponent<Tile>().x = hit.collider.gameObject.GetComponent<Tile>().x;
-                    selected.gameObject.GetComponent<Tile>().y = hit.collider.gameObject.GetComponent<Tile>().y;
-                    hit.collider.GetComponent<Tile>().x = holder.GetComponent<Tile>().x;
-                    hit.collider.GetComponent<Tile>().y = holder.GetComponent<Tile>().y;
+
+
+                    
 
 
                     selected.gameObject.GetComponent<Tile>().Type = type1;
